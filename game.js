@@ -51,6 +51,12 @@ const config = {
         .setInteractive()
         .on('pointerdown', () => { this.scene.restart(); })
         .setVisible(false);
+
+    // 모바일 터치 이벤트
+    this.input.on('pointerdown', (pointer) => {
+        player.x = pointer.x;
+        player.y = pointer.y;
+    });
   }
   
   function update() {
