@@ -34,6 +34,15 @@ const config = {
     dog = this.physics.add.sprite(350, 300, 'dog');
     dog.displayWidth = 100;  // 너비를 100픽셀로 설정
     dog.displayHeight = 100;  // 높이를 100픽셀로 설정
+
+
+    // Treat의 위치를 랜덤으로 설정 (화면에는 표시되지 않음)
+    treat = {
+        x: Math.random() * this.game.config.width,
+        y: Math.random() * this.game.config.height
+    };
+
+    // 키보드 입력 설정
     cursors = this.input.keyboard.createCursorKeys();
   }
   
@@ -53,16 +62,26 @@ const config = {
     } else if (cursors.down.isDown) {
       player.setVelocityY(160);
     }
-  
+
+
+
+
     // dog이 player를 따라다니도록 설정
     const speed = 100;
-    const distance = Phaser.Math.Distance.Between(dog.x, dog.y, player.x, player.y);
-  
-    if (distance > 5) { // 일정 거리 이상 멀어지면 따라가기 시작
+    const distance_player = Phaser.Math.Distance.Between(dog.x, dog.y, player.x, player.y);
+    const distance_treat = Phaser.Math.Distance.Between(dog.x, dog.y, treat.x, treat.y);
+
+    if (distance_player > 5) { // 일정 거리 이상 멀어지면 따라가기 시작
       const angle = Phaser.Math.Angle.Between(dog.x, dog.y, player.x, player.y);
       dog.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+
+      // Dog가 Treat에 가까이 있으면 Treat를 따라감
+      if (distance_treat < 100) {
+          this.physics.moveTo(dog, treat.x, treat.y, speed);
+      } else {
+          this.physics.moveToObject(dog, player, speed);
+      }
     } else {
       dog.setVelocity(0);
     }
   }
-  
