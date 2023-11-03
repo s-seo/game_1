@@ -44,6 +44,13 @@ const config = {
 
     // 키보드 입력 설정
     cursors = this.input.keyboard.createCursorKeys();
+
+    // 재시작 버튼
+    restartButton = this.add.text(400, 300, 'Restart', { fontSize: '32px', fill: '#fff' })
+        .setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', () => { this.scene.restart(); })
+        .setVisible(false);
   }
   
   function update() {
@@ -63,9 +70,6 @@ const config = {
       player.setVelocityY(160);
     }
 
-
-
-
     // dog이 player를 따라다니도록 설정
     const speed = 100;
     const distance_player = Phaser.Math.Distance.Between(dog.x, dog.y, player.x, player.y);
@@ -84,4 +88,21 @@ const config = {
     } else {
       dog.setVelocity(0);
     }
+
+
+    // 플레이어와 개가 화면을 벗어나지 않도록 함
+    player.x = Phaser.Math.Clamp(player.x, 0, this.game.config.width);
+    player.y = Phaser.Math.Clamp(player.y, 0, this.game.config.height);
+    dog.x = Phaser.Math.Clamp(dog.x, 0, this.game.config.width);
+    dog.y = Phaser.Math.Clamp(dog.y, 0, this.game.config.height);
+
+    // dog이 treat에 도착했을 때
+    if (distance_treat < 5) {
+        endGame();
+    }
   }
+
+function endGame() {
+    // 게임 종료 처리
+    restartButton.setVisible(true);  // 재시작 버튼 표시
+}
