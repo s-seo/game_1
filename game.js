@@ -46,7 +46,7 @@ const config = {
     cursors = this.input.keyboard.createCursorKeys();
 
     // 재시작 버튼
-    restartButton = this.add.text(400, 300, 'Restart', { fontSize: '32px', fill: '#fff' })
+    restartButton = this.add.text(400, 300, 'More Treat?', { fontSize: '32px', fill: '#fff' })
         .setOrigin(0.5)
         .setInteractive()
         .on('pointerdown', () => { this.scene.restart(); })
